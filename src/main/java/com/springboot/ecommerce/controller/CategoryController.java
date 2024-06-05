@@ -5,10 +5,7 @@ import com.springboot.ecommerce.dto.CategoryResponse;
 import com.springboot.ecommerce.model.Category;
 import com.springboot.ecommerce.service.CategoryService;
 import jakarta.websocket.server.PathParam;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,18 +26,24 @@ public class CategoryController {
     }
     
     @GetMapping("/api/public/category/{id}")
-    public Category getCategory(@PathParam("") String id){
-        //list.stream().
-        return null;
+    public Category getCategory(@PathVariable Long id){
+        return categoryService.getCategory(id);
     }
 
     @PostMapping("/api/public/category")
     public String addCategory(@RequestBody Category category){
         return categoryService.addCategory(category);
     }
-    
-    public void updateCategory(){}
-    
-    public void deleteCategory(){}
+
+    @PutMapping("/api/public/category/{id}")
+    public void updateCategory(@PathVariable Long id,
+                               @RequestBody Category category){
+        categoryService.updateCategory(category,id);
+    }
+
+    @DeleteMapping("/api/public/category/{id}")
+    public void deleteCategory(@PathVariable Long id){
+        categoryService.deleteCategory(id);
+    }
     
 }
