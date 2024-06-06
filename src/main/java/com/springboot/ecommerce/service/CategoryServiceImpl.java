@@ -1,9 +1,13 @@
 package com.springboot.ecommerce.service;
 
-import com.springboot.ecommerce.assambler.CategoryAssambler;
+import com.springboot.ecommerce.assambler.CategoryAssembler;
+import com.springboot.ecommerce.assambler.CategoryAssemblerImpl;
+import com.springboot.ecommerce.dto.CategoryRequest;
+import com.springboot.ecommerce.dto.CategoryResponse;
 import com.springboot.ecommerce.exception.ResourceNotFoundException;
 import com.springboot.ecommerce.model.Category;
 import com.springboot.ecommerce.repository.CategoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +16,9 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService{
 
+    @Autowired
+    private CategoryAssembler categoryAssembler;
 
-    private CategoryAssambler categoryAssambler;
     private CategoryRepository categoryRepository;
 
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
@@ -21,30 +26,41 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> getAllCategories() {
+
+        List<Category> list = categoryRepository.findAll();
+
+        List<CategoryResponse> resList = list.stream()
+                .map(cat -> categoryAssembler.assemble(cat))
+                .toList();
+
+        return resList;
     }
 
     @Override
-    public Category getCategory(Long id) {
+    public CategoryResponse getCategory(Long id) {
         if(!categoryRepository.existsById(id))
             throw new ResourceNotFoundException("Category", "CategoryId", id);
-        return categoryRepository.getById(id);
+        Category cat =  categoryRepository.getById(id);
+        return categoryAssembler.assemble(cat);
     }
 
     @Override
-    public Category addCategory(Category category) {
+    public CategoryResponse addCategory(CategoryRequest req) {
         // adding duplicate need to handle
-        return categoryRepository.save(category);
+        Category cat = categoryAssembler.assemble(req);
+        cat = categoryRepository.save(cat);
+        return categoryAssembler.assemble(cat);
     }
 
     @Override
-    public Category updateCategory(Category updated, Long id) {
+    public CategoryResponse updateCategory(CategoryRequest update, Long id) {
         if(!categoryRepository.existsById(id))
             throw new ResourceNotFoundException("Category", "CategoryId", id);
-        Category existing = categoryRepository.getById(id);
-        categoryAssambler.assamble(existing, updated);
-        return categoryRepository.save(existing);
+        Category cat = categoryRepository.getById(id);
+        cat = categoryAssembler.assemble(update, cat);
+        cat = categoryRepository.save(cat);
+        return categoryAssembler.assemble(cat);
     }
 
     @Override

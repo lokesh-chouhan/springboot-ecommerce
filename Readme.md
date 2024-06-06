@@ -24,3 +24,9 @@ https://h2database.com/html/main.html
 
 ## Hibernate Validator
 https://hibernate.org/validator/
+
+
+## Model mapper
+https://modelmapper.org/
+
+
