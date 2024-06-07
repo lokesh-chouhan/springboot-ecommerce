@@ -2,12 +2,8 @@
 https://www.udemy.com/course/spring-boot-using-intellij-build-a-real-world-project/learn/lecture/43983132#notes
 
 
-
-
-
-
-
-
+## git repository
+https://github.com/EmbarkXOfficial/spring-boot-course?tab=readme-ov-file
 
 
 ## application.properties
