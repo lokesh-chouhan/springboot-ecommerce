@@ -1,24 +1,24 @@
 package com.springboot.ecommerce.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "category")
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "category")
+@Entity
 public class Category {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private Long categoryId;
 
     @NotBlank
+    @Column(name = "name")
     private String categoryName;
 }
