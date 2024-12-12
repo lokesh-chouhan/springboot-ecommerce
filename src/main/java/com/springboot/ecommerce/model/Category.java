@@ -18,7 +18,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long categoryId;
 
-    @NotBlank
+
     @Column(name = "name")
     private String categoryName;
 }

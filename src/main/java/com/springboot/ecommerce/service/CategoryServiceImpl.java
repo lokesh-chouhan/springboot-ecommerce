@@ -8,7 +8,9 @@ import com.springboot.ecommerce.exception.ResourceNotFoundException;
 import com.springboot.ecommerce.model.Category;
 import com.springboot.ecommerce.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CategoryResponse getCategory(Long id) {
         if(!categoryRepository.existsById(id))
+            //throw new ResponseStatusException(HttpStatus.NOT_FOUND, "category not found");
             throw new ResourceNotFoundException("Category", "CategoryId", id);
         Category cat =  categoryRepository.getById(id);
         return categoryAssembler.assemble(cat);
